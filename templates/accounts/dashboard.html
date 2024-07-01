@@ -1,0 +1,227 @@
+
+
+{% block content %}
+{% load static %}
+<!-- Sub banner start -->
+<head>
+  <style>
+    * {
+      color: #fff;
+      padding: 0%;
+      margin: 0%;
+      box-sizing: border-box;
+    }
+    .overview-bgi:before {
+  background: url("/static/bg4.png") 50% 0 repeat fixed;
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+ 
+}
+body {
+  width: 100%;
+  height: 100vh ;
+  background-color: black;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+header {
+  position: relative;
+    width: 85%;
+    height: 95%;
+    border: 1px solid white;
+    background-color: #111727;
+    border-radius: 15px;
+    box-shadow: 0 0 .2rem #fff, 0 0 .2rem #fff, 0 0 2rem #fe1322, 0 0 0.8rem #f31768, 0 0 2.8rem #fe1357, inset 0 0 1.3rem #fe136a;
+    display: flex;
+    flex-wrap:wrap;
+    overflow: hidden;
+
+}
+
+.sub-banner .breadcrumb-area {
+  letter-spacing: 1px;
+  position: absolute;
+  top: 55%;
+  right: 0;
+  opacity: 0.9;
+  left: 0;
+}
+.sub-banner .breadcrumb-area h1 {
+  margin: 0 0 7px;
+  font-weight: 600;
+  color: #fff;
+  font-size: 30px;
+  text-transform: uppercase;
+  font-family: "Roboto", sans-serif;
+}
+.sub-banner .breadcrumbs li {
+  display: inline-block;
+  list-style: none;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+}
+
+.sub-banner .breadcrumbs li a {
+  color: #fff;
+}
+
+.sub-banner .breadcrumbs .active {
+  margin-left: 3px;
+  color: #fff;
+}
+.sub-banner-2 {
+  margin: 0 15px 30px;
+  font-size: 15px;
+}
+@media (max-width: 992px) {
+.sub-banner {
+  height: 330px;
+}
+}
+
+.sub-banner .breadcrumbs .active:before {
+  margin-right: 7px;
+  content: "/";
+  padding: 0 3px;
+  color: #fff;
+  font: normal normal normal 16px/1 FontAwesome;
+}
+@media (max-width: 768px) {
+  .sub-banner {
+    height: 300px;
+  } 
+  .sub-banner .breadcrumb-area h1 {
+    font-size: 27px;
+  } 
+  .sub-banner .breadcrumbs li {
+    font-size: 15px;
+  } }
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top:5%;
+}
+@media (min-width: 768px) {
+  .container {
+      max-width: 720px;
+  }
+}
+@media (min-width: 576px) {
+  .container {
+      max-width: 540px;
+  }
+}
+@media (min-width: 768px) {
+  .container, .container-md, .container-sm {
+      max-width: 720px;
+  }
+}
+.sub-banner {
+  margin-left:5%;
+  background: rgba(0, 0, 0, 0.04) url(../img/car-1.jpg) top left repeat;
+  background-size: cover;
+  height: 360px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: relative;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+}
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+@media (max-width: 992px) {
+  .sub-banner {
+      background-position: inherit;
+      background-repeat: inherit;
+  }
+}
+@media (max-width: 992px) {
+  .sub-banner {
+      height: 330px;
+  }
+}
+.overview-bgi {
+  position: relative;
+}
+
+header  .user img{
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top:5%;
+  right:5%;
+  border-radius: 50%;
+  box-shadow: 2px 2px 8px #131312;
+}
+
+  </style>
+</head>
+<header>
+  <nav>
+    <div class="user dropdown">
+      <img src="{% static 'img/sumant.png' %}" alt="User" title="Sumant (Arjit Sing)" class="dropbtn"> 
+      <div class="dropdown-content">
+          <ul style="list-style-type: none; padding: 30px; margin: 0;">
+          {% if user.is_authenticated %}
+         
+          <li>
+              <a href="javascript:{document.getElementById('logout').submit()}" style="color:red; font-size:20px;" class="btn btn-danger btn-xs"><i class="fa fa-sign-out"></i> Logout</a>
+              <form action="{% url 'logout' %}" id="logout" method="POST">
+                  {% csrf_token %}
+                  <input type="hidden">
+              </form>
+          </li>
+          {% else %}
+          <li>
+              <a href="{% url 'login' %}" class="btn btn-secondary btn-xs"><i class="fa fa-sign-in"></i> Login</a>
+          </li>
+          <li>
+              <a href="{% url 'register' %}" class="btn btn-secondary btn-xs"><i class="fa fa-user-plus"></i> Register</a>
+          </li>
+          {% endif %}
+      </ul>
+      </div>
+  </div>
+</nav>
+<div class="sub-banner overview-bgi">
+    <div class="container breadcrumb-area">
+        <div class="breadcrumb-areas">
+            <h1 style="color: Red;">Dashboard</h1>
+            <ul class="breadcrumbs">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li class="active">{{user.first_name}}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- Sub Banner end -->
+
+
+<!--   Dashboard Start   -->
+
+<div class="container mt-50 mb-50">
+  {% include 'includes/messages.html' %}
+	<div class="main-title" style="text-align:left !important;">
+            <h1 style="color: aliceblue;">Welcome <span style="color: Red;">{{user.first_name}} {{user.last_name}},</span></h1>
+            <p style="color: aliceblue;">Here are the list of the songs that you have inquired about:</p>
+        </div>
+       
+
+</div>
+</header>
+<!--   Dashboard End   -->
+
+{% endblock %}

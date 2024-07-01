@@ -1,0 +1,393 @@
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShreyaGhoshal Playlist {% block title %}{% endblock %} </title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        header .song_side .recommendations_section {
+            width: 90%;
+            height: auto;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            margin-left: 5%;
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+        }
+        
+        header .song_side .recommendations_section::-webkit-scrollbar {
+            display: none;
+        }
+        
+        header .song_side .recommendations_section ul.recommendation_list {
+            display: flex;
+        }
+        
+        header .song_side .recommendations_section ul.recommendation_list li {
+            min-width: 100px;
+            height: 140px;
+            list-style-type: none;
+            margin-right: 10px;
+            transition: .3s linear;
+        }
+        
+        header .song_side .recommendations_section ul.recommendation_list li:hover {
+            background: rgba(105, 105, 170, 0.1);
+        }
+        
+        header .song_side .recommendations_section ul.recommendation_list li .img_play {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        header .song_side .recommendations_section ul.recommendation_list li .img_play img {
+            width: 100%;
+            height: 100%;
+        }
+        
+        header .song_side .recommendations_section ul.recommendation_list li .img_play .bi {
+            position: absolute;
+            font-size: 20px;
+            cursor: pointer;
+            transition: .3s linear;
+            opacity: 0;
+        }
+        
+        header .song_side .recommendations_section ul.recommendation_list li .img_play:hover .bi {
+            opacity: 1;
+        }
+        
+        header .song_side .recommendations_section ul.recommendation_list li h5 {
+            padding: 5px 0px 0px 5px;
+            line-height: 15px;
+            font-size: 10px;
+        }
+        
+        header .song_side .recommendations_section ul.recommendation_list li h5 .subtitle {
+            font-size: 9px;
+            color: #4c5262;
+        }
+        .dropbtn {
+          background-image: url(static/img/sumant.jpg);
+          background-size:30px;
+          color: white;
+          padding: 16px;
+          font-size: 16px;
+          border: none;
+        }
+        
+        .dropdown {
+          position: relative;
+          display: inline-block;
+        }
+        header .song_side nav ul li {
+           margin-right:20px; 
+           margin-left:20px; 
+        }
+        
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: rgba(255, 255, 255, 0.4);
+          -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+          border-radius:51px;
+          z-index: 1;
+          min-width: 160px;
+          right: 2%;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        
+        }
+        
+        .dropdown-content a {
+          color: #fff;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+        }
+        header .song_side nav .user img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            box-shadow: 2px 2px 8px #131312;
+            cursor: pointer; /* Added */
+        }
+        
+        .dropdown-content a:hover {background-color: #111727; }
+        
+        .dropdown:hover .dropdown-content {display: block;}
+        
+        .dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+        header .song_side::before {
+            background: url(/static/img/Justin.png);
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 300px;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: -1;   
+            }
+        </style>
+</head>
+<body>
+   
+    <header>
+        {% include 'includes/artistplaylist.html' %}
+        
+        <!-- Songs Content -->
+        <div class="song_side">
+           
+             <!-- Navbar -->
+             <nav>
+                <ul>
+                    <li>Discover<span></span></li>
+                    
+                </ul>
+                <div class="search">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Search Music...">
+                    <div class="search_result">
+                        {% comment %} <a href="{% static '#' %}" class="card">
+                            <img src="{% static '/img/n.jfif' %}" alt="" >
+                            <div class="content">
+                                On My Way 
+                                <div class="subtitle">Alan Walkar</div>
+                            </div>
+                        </a> {% endcomment %}
+                        <div id="no-results" style="display: none;">Song not found</div>
+                    </div>
+                </div>
+                <div class="user dropdown">
+                    <img src="{% static 'img/sumant.png' %}" alt="User" title="Sumant (Shreya Ghoshal)" class="dropbtn"> 
+                    <div class="dropdown-content">
+                        <ul style="list-style-type: none; padding: 0; margin: 0;">
+                        {% if user.is_authenticated %}
+                        <li>
+                            <a href="{% url 'dashboard' %}" class="btn btn-secondary btn-xs"><i class="fa fa-tachometer"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="javascript:{document.getElementById('logout').submit()}" class="btn btn-danger btn-xs"><i class="fa fa-sign-out"></i> Logout</a>
+                            <form action="{% url 'logout' %}" id="logout" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden">
+                            </form>
+                        </li>
+                        {% else %}
+                        <li>
+                            <a href="{% url 'login' %}" class="btn btn-secondary btn-xs"><i class="fa fa-sign-in"></i> Login</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'register' %}" class="btn btn-secondary btn-xs"><i class="fa fa-user-plus"></i> Register</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    </div>
+                </div>
+                
+            </nav>
+
+
+
+             <!-- Artist Content -->
+            <div class="content">
+                <h1>Justin Bieber</h1>
+                <p>
+                    Experience the soul-stirring melodies of Arijit Singh – where every note is a journey and every lyric a story.
+                   <br>Dive into his world on our playlist and let his music be your guiding light.
+                </p>
+                <div class="buttons">
+                    <button id="play-button">PLAY</button>
+                    <button id="follow-button">FOLLOW</button>
+                </div>
+            </div>
+            
+            <!-- Poplular Songs -->
+            <div class="popular_song">
+                <div class="h4">
+                    <h4>Popular Songs</h4>
+                    <div class="btn_s">
+                        <i  class="bi bi-arrow-left-short" id="pop_song_left"></i>
+                        <i  class="bi bi-arrow-right-short" id="pop_song_right"></i>
+                    </div>
+                </div>
+
+                <div class="pop_song">
+                     <li class="songItem">
+                        <div class="img_play">
+                            <img src="{% static '#' %}" alt="alen">
+                            <i class="bi playlistPlay bi-play-circle-fill" id="100"></i>
+                        </div>
+                        <h5>On My Way <br>
+                            <div class="subtitle">alen Walkar</div>
+                        </h5> 
+                    </li>
+                 <li class="songItem">
+                        <div class="img_play">
+                            <img src="{% static '#' %}" alt="alen">
+                            <i class="bi playlistPlay bi-play-circle-fill" id="101"></i>
+                        </div>
+                        <h5>On My Way <br>
+                            <div class="subtitle">alen Walkar</div>
+                        </h5> 
+                    </li>
+
+                    <li class="songItem">
+                        <div class="img_play">
+                            <img src="{% static '#' %}" alt="alen">
+                            <i class="bi playlistPlay bi-play-circle-fill" id="102"></i>
+                        </div>
+                        <h5>On My Way <br>
+                            <div class="subtitle">alen Walkar</div>
+                        </h5> 
+                    </li>
+                    
+                    <li class="songItem">
+                        <div class="img_play">
+                                <img src="{% static '#' %}" alt="alan">
+                            <i class="bi playlistPlay bi-play-circle-fill" id="103"></i>
+                        </div>
+                        <h5>On My Way <br>
+                            <div class="subtitle">alen Walkar</div>
+                        </h5> 
+                    </li>
+                    <li class="songItem">
+                        <div class="img_play">
+                                <img src="{% static '#' %}" alt="alan">
+                            <i class="bi playlistPlay bi-play-circle-fill" id="104"></i>
+                        </div>
+                        <h5>On My Way <br>
+                            <div class="subtitle">alen Walkar</div>
+                        </h5> 
+                    </li>
+                    <li class="songItem">
+                        <div class="img_play">
+                                <img src="{% static '#' %}" alt="alan">
+                            <i class="bi playlistPlay bi-play-circle-fill" id="105"></i>
+                        </div>
+                        <h5>On My Way <br>
+                            <div class="subtitle">alen Walkar</div>
+                        </h5> 
+                    </li>
+                    <li class="songItem">
+                        <div class="img_play">
+                                <img src="{% static '#' %}" alt="alan">
+                            <i class="bi playlistPlay bi-play-circle-fill" id="106"></i>
+                        </div>
+                        <h5>On My Way <br>
+                            <div class="subtitle">alen Walkar</div>
+                        </h5> 
+                    </li> 
+                </div>
+            </div>
+
+                 <!-- Poplular Artists -->
+                <div class="popular_artists">
+                    <div class="h4">
+                        <h4>Popular Artists</h4>
+                        <div class="btn_s">
+                            <i id="left_scrolls" class="bi bi-arrow-left-short"></i>
+                            <i id="right_scrolls" class="bi bi-arrow-right-short"></i>
+                        </div>
+                    </div>
+                    <div class="item">
+                       
+                        <li>
+                            <a href="{% url 'playlist1' %}"> <img src="{% static '/img/arjit.jpg' %}" alt="Arjit Singh" title="Arjit Singh"></a>
+                        </li>
+                        <li>
+                            <a href="{% url 'playlist2' %}"> <img src="{% static '/img/n.jfif' %}" alt="Neha Kakkar" title="Neha Kakkar"></a>
+                        </li>
+                        <li>
+                            <a href="{% url 'home' %}"> <img src="{% static 'img/a.jfif' %}" alt="Alen Walkar" title="Alen Walkar"></a>
+                        </li>
+                        <li>
+                            <a href="{% url 'playlist3' %}">  <img src="{% static 'img/j.jfif' %}" alt="Justin Biber" title="Justin Biber"></a>
+                        </li>
+                        <li>
+                            <a href="{% url 'playlist5' %}">  <img src="{% static 'img/s.jfif' %}" alt="Shreya Ghoshal" title="Shreya Ghoshal"></a>
+                        </li>
+                        <li>
+                            <a href="{% url 'playlist4' %}"> <img src="{% static 'img/t.jfif' %}" alt="Taylor Swift" title="Taylor Swift"></a>
+                        </li>
+                        <li>
+                            <a href="{% url 'playlist6' %}"> <img src="{% static 'img/ar.webp' %}" alt="A. R. Rahman" title="A. R. Rahman"></a>
+                        </li>
+                        <li>
+                            <img src="{% static 'img/kk.jpg' %}" alt="KK" title="KK">
+                        </li>
+                        <li>
+                            <img src="{% static 'img/jubin.jpg' %}" alt="Jubin Nautiyal" title="Jubin Nautiyal">
+                        </li>
+                        <li>
+                            <img src="{% static 'img/am.jpg' %}" alt="Armaan Malik" title="Armaan Malik">
+                        </li>
+
+                    </div>
+                </div>
+                <div class="recommendations_section">
+                    <div class="h4">
+                        <h4 style="margin-bottom: 2%;">Top 5 Recommended Songs for You</h4>
+                        
+                    <ul class="recommendation_list">
+                      <!-- Recommended songs will be dynamically added here -->
+                    </ul>
+                  </div>
+            </div>
+       
+
+
+        <div class="master_play">
+            <div class="wave">
+                <div class="wave1"></div>
+                <div class="wave1"></div>
+                <div class="wave1"></div>
+            </div>
+            <img src="{% static 'img/1.jpg' %}" alt="Arjit" id="poster_master_play">
+            <h5 id="title">On My Way <br>
+                <div class="subtitle">Arijit Singh</div>
+             </h5>
+             <div class="icon">
+                <i class="bi shuffle bi-music-note-beamed">next</i>
+                <i class="bi bi-skip-start-circle" id="back"></i>
+                <i class="bi bi-play-circle" id="masterplay"></i>
+                <i class="bi bi-skip-end-circle" id="next"></i>
+                <a href="" download id="download_music"><i class="bi bi-cloud-arrow-down-fill" ></i></a>
+            </div> 
+            <span id="currrentStart">0:00</span>
+               <div class="bar">
+                <input type="range" id="seek" min="0" value="0" max="100">
+                <div class="bar2" id="bar2"></div>
+                <div class="dot"></div>
+               </div>
+            <span id="currrentEnd">0:00</span>
+            <div class="vol">
+                <i class="bi bi-volume-up-fill" id="vol_icon"></i>
+                <input type="range" id="vol" min="0" max="100">
+                <div class="vol_bar"></div>
+                <div class="dot" id="vol_dot"></div>
+            </div>
+        </div>
+    </header>
+   
+
+    <script src="{% static 'js/Justin.js' %}">
+      
+    
+    </script>
+    
+</body> 
+</html>
+{% endblock %}
